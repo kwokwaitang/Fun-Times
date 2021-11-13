@@ -1,4 +1,8 @@
-package com.ford;
+package com.ford.basket;
+
+import com.ford.stockitem.StockItem;
+import com.ford.till.CashTill;
+import com.ford.till.Till;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,7 +14,7 @@ public class HenryGroceryBasket implements Basket {
 
     private List<StockItem> basket;
 
-    private LocalDate dateOfPurchase;
+    private final LocalDate dateOfPurchase;
 
     public HenryGroceryBasket(List<StockItem> basket) {
         this(basket, LocalDate.now());
@@ -36,7 +40,8 @@ public class HenryGroceryBasket implements Basket {
      */
     @Override
     public BigDecimal priceUp() {
-        CashTill discount = new CurrentDiscount(basket, dateOfPurchase);
+        final Till discount = new CashTill(basket, dateOfPurchase);
+
         return discount.priceUp();
     }
 }

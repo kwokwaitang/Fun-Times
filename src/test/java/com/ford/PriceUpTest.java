@@ -1,5 +1,9 @@
 package com.ford;
 
+import com.ford.basket.Basket;
+import com.ford.basket.HenryGroceryBasket;
+import com.ford.stockitem.StockItem;
+import com.ford.stockitem.StockItemType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,8 +54,8 @@ class PriceUpTest {
     @DisplayName("Price up basket with 3 tins and 2 loafs of bread, purchase today")
     void shouldPriceUp_BasketOf3Tins2LoafsOfBread_BoughtToday() {
         // Given...
-        StockItem soupTins = new StockItem("soup", StockItemType.TIN, new BigDecimal(0.65), 3);
-        StockItem loavesOfBread = new StockItem("bread", StockItemType.LOAF, new BigDecimal(0.80), 2);
+        StockItem soupTins = new StockItem("soup", StockItemType.TIN, new BigDecimal("0.65"), 3);
+        StockItem loavesOfBread = new StockItem("bread", StockItemType.LOAF, new BigDecimal("0.80"), 2);
         List<StockItem> basket = new ArrayList<>(Arrays.asList(soupTins, loavesOfBread));
 
         Basket henryGroceryBasket = new HenryGroceryBasket(basket);
@@ -68,8 +72,8 @@ class PriceUpTest {
     @DisplayName("Price up basket with 6 apples and 1 bottle of milk, purchase today")
     void shouldPriceUp_BasketOf6Apples1Milk_BoughtToday() {
         // Given...
-        StockItem apples = new StockItem("apple", StockItemType.SINGLE, new BigDecimal(0.10), 6);
-        StockItem bottleOfMilk = new StockItem("milk", StockItemType.BOTTLE, new BigDecimal(1.30), 1);
+        StockItem apples = new StockItem("apple", StockItemType.SINGLE, new BigDecimal("0.10"), 6);
+        StockItem bottleOfMilk = new StockItem("milk", StockItemType.BOTTLE, new BigDecimal("1.30"), 1);
         List<StockItem> basket = new ArrayList<>(Arrays.asList(apples, bottleOfMilk));
 
         Basket henryGroceryBasket = new HenryGroceryBasket(basket, PURCHASE_TODAY);
@@ -87,8 +91,8 @@ class PriceUpTest {
     @DisplayName("Price up basket with 6 apples and 1 bottle of milk, to be purchased in 5 days time")
     void shouldPriceUp_BasketOf6Apples1Milk_BoughtIn5DaysTime() {
         // Given...
-        StockItem apples = new StockItem("apple", StockItemType.SINGLE, new BigDecimal(0.10), 6);
-        StockItem bottleOfMilk = new StockItem("milk", StockItemType.BOTTLE, new BigDecimal(1.30), 1);
+        StockItem apples = new StockItem("apple", StockItemType.SINGLE, new BigDecimal("0.10"), 6);
+        StockItem bottleOfMilk = new StockItem("milk", StockItemType.BOTTLE, new BigDecimal("1.30"), 1);
         List<StockItem> basket = new ArrayList<>(Arrays.asList(apples, bottleOfMilk));
 
         Basket henryGroceryBasket = new HenryGroceryBasket(basket, PURCHASE_IN_FIVE_DAYS_TIME);
@@ -106,9 +110,9 @@ class PriceUpTest {
     @DisplayName("Price up basket with 3 apples, 2 tins of soup and 1 loaf of bread, to be purchased in 5 days time")
     void shouldPriceUp_BasketOf3Apples2Tins1LoafOfBread_BoughtIn5DaysTime() {
         // Given...
-        StockItem apples = new StockItem("apple", StockItemType.SINGLE, new BigDecimal(0.10), 3);
-        StockItem soupTins = new StockItem("soup", StockItemType.TIN, new BigDecimal(0.65), 2);
-        StockItem loafOfBread = new StockItem("bread", StockItemType.LOAF, new BigDecimal(0.80), 1);
+        StockItem apples = new StockItem("apple", StockItemType.SINGLE, new BigDecimal("0.10"), 3);
+        StockItem soupTins = new StockItem("soup", StockItemType.TIN, new BigDecimal("0.65"), 2);
+        StockItem loafOfBread = new StockItem("bread", StockItemType.LOAF, new BigDecimal("0.80"), 1);
         List<StockItem> basket = new ArrayList<>(Arrays.asList(apples, soupTins, loafOfBread));
 
         Basket henryGroceryBasket = new HenryGroceryBasket(basket, PURCHASE_IN_FIVE_DAYS_TIME);

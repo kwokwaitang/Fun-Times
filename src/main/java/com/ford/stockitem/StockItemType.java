@@ -1,4 +1,4 @@
-package com.ford;
+package com.ford.stockitem;
 
 public enum StockItemType {
     TIN,

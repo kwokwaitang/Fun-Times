@@ -1,4 +1,4 @@
-package com.ford;
+package com.ford.stockitem;
 
 import java.math.BigDecimal;
 
