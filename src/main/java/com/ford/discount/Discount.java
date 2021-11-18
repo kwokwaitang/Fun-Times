@@ -40,7 +40,7 @@ public abstract class Discount {
     }
 
     protected boolean isTinsInExcessOver(final int criteria) {
-        Optional<StockItem> optTinStockItem = stockItems.stream()
+        final Optional<StockItem> optTinStockItem = stockItems.stream()
                 .filter(stockItem -> stockItem.getUnit().equals(StockItemType.TIN))
                 .findFirst();
         if (optTinStockItem.isPresent()) {
@@ -51,7 +51,7 @@ public abstract class Discount {
     }
 
     protected int getNumberOfSoupTinsThatCanBeDiscounted() {
-        Optional<StockItem> optTinStockItem =
+        final Optional<StockItem> optTinStockItem =
                 stockItems.stream().filter(stockItem -> stockItem.getUnit().equals(StockItemType.TIN)).findFirst();
         if (optTinStockItem.isPresent()) {
             return optTinStockItem.get().getRequiredNumber() / 2;
@@ -65,13 +65,19 @@ public abstract class Discount {
                 .anyMatch(stockItem -> stockItem.getUnit().equals(StockItemType.SINGLE) && stockItem.getProduct().equalsIgnoreCase("apple"));
     }
 
+    /**
+     * To get rid of {@link Discount#anyApplesPresentInBasket}
+     *
+     * @param singleItem
+     * @return
+     */
     protected boolean anySingleItemsPresentInBasket(final String singleItem) {
         return stockItems.stream()
                 .anyMatch(stockItem -> stockItem.getUnit().equals(StockItemType.SINGLE) && stockItem.getProduct().equalsIgnoreCase(singleItem));
     }
 
     protected int getNumberOfApplesThatCanBeDiscounted() {
-        Optional<StockItem> optAppleStockItem = stockItems.stream()
+        final Optional<StockItem> optAppleStockItem = stockItems.stream()
                 .filter(stockItem -> stockItem.getUnit().equals(StockItemType.SINGLE) && stockItem.getProduct().equalsIgnoreCase("apple"))
                 .findFirst();
         if (optAppleStockItem.isPresent()) {
@@ -81,8 +87,14 @@ public abstract class Discount {
         return 0;
     }
 
+    /**
+     * To get rid of {@link Discount#getNumberOfApplesThatCanBeDiscounted}
+     *
+     * @param singleItem The "single" item to count up
+     * @return The total number of the "single" item
+     */
     protected int getCountOfSingleItem(final String singleItem) {
-        Optional<StockItem> optAppleStockItem = stockItems.stream()
+        final Optional<StockItem> optAppleStockItem = stockItems.stream()
                 .filter(stockItem -> stockItem.getUnit().equals(StockItemType.SINGLE) && stockItem.getProduct().equalsIgnoreCase(singleItem))
                 .findFirst();
         if (optAppleStockItem.isPresent()) {
