@@ -24,15 +24,19 @@ public class CashTill implements Till {
     @Override
     public BigDecimal priceUp() {
         BigDecimal total = totalUp();
-        Discount fromYesterdayForSevenDays = new FromYesterdayForSevenDays(stockItems, dateOfPurchase);
-        Discount fromThreeDaysHenceToEndOfMonth = new FromThreeDaysHenceToEndOfMonth(stockItems, dateOfPurchase);
 
-        // Calculate any discounts...
-        BigDecimal discount = fromYesterdayForSevenDays.getDiscount();
-        discount = discount.add(fromThreeDaysHenceToEndOfMonth.getDiscount());
+        // Ensure there is a grand total before applying any possible discounts
+        if (total.compareTo(BigDecimal.ZERO) > 0) {
+            // Calculate any discounts...
+            Discount fromYesterdayForSevenDays = new FromYesterdayForSevenDays(stockItems, dateOfPurchase);
+            Discount fromThreeDaysHenceToEndOfMonth = new FromThreeDaysHenceToEndOfMonth(stockItems, dateOfPurchase);
 
-        if (discount.compareTo(BigDecimal.ZERO) > 0) {
-            return total.subtract(discount).setScale(2, RoundingMode.HALF_EVEN);
+            BigDecimal discount = fromYesterdayForSevenDays.getDiscount();
+            discount = discount.add(fromThreeDaysHenceToEndOfMonth.getDiscount());
+
+            if (discount.compareTo(BigDecimal.ZERO) > 0) {
+                return total.subtract(discount).setScale(2, RoundingMode.HALF_EVEN);
+            }
         }
 
         return total.setScale(2, RoundingMode.HALF_EVEN);

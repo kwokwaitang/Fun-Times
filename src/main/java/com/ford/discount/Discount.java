@@ -25,6 +25,7 @@ public abstract class Discount {
     public BigDecimal getDiscount() {
         BigDecimal discount = new BigDecimal("0.00");
 
+        // Ensure there is something in the shopping basket before determining any possibly discounts
         if (stockItems != null && !stockItems.isEmpty()) {
             discount = discount.add(calculateDiscount());
         }
