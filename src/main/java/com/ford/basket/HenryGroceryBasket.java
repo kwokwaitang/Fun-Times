@@ -33,11 +33,6 @@ public class HenryGroceryBasket implements Basket {
         this.basket = basket;
     }
 
-    /**
-     * Need to pass in the purchase date to determine what discount is applicable
-     *
-     * @return The totalled up price of the goods in the basket minus any discount
-     */
     @Override
     public BigDecimal priceUp() {
         final Till till = new CashTill(basket, dateOfPurchase);

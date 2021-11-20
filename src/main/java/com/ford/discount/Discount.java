@@ -26,7 +26,7 @@ public abstract class Discount {
         BigDecimal discount = new BigDecimal("0.00");
 
         // Ensure there is something in the shopping basket before determining any possibly discounts
-        if (stockItems != null && !stockItems.isEmpty()) {
+        if (!isBasketEmpty()) {
             discount = discount.add(calculateDiscount());
         }
 
@@ -34,6 +34,10 @@ public abstract class Discount {
     }
 
     abstract BigDecimal calculateDiscount();
+
+    private boolean isBasketEmpty() {
+        return stockItems == null || stockItems.isEmpty();
+    }
 
     protected boolean anyStockItemsPresentInBasket(List<StockItemType> stockItemTypes) {
         return stockItems.stream()
