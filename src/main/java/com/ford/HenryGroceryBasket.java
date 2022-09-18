@@ -8,6 +8,9 @@ import java.util.Objects;
 
 public class HenryGroceryBasket implements Basket {
 
+    public static final LocalDate PURCHASE_TODAY = LocalDate.now();
+    public static final LocalDate PURCHASE_IN_FIVE_DAYS_TIME = LocalDate.now().plusDays(5);
+
     private List<StockItem> basket;
 
     private LocalDate dateOfPurchase;

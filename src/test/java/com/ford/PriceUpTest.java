@@ -10,13 +10,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.ford.HenryGroceryBasket.PURCHASE_IN_FIVE_DAYS_TIME;
+import static com.ford.HenryGroceryBasket.PURCHASE_TODAY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PriceUpTest {
-
-    private static final LocalDate PURCHASE_TODAY = LocalDate.now();
-    private static final LocalDate PURCHASE_IN_FIVE_DAYS_TIME = LocalDate.now().plusDays(5);
 
     @Test
     @DisplayName("When the basket of goods is unavailable")
