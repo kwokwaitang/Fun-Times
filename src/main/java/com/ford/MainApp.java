@@ -24,51 +24,59 @@ public class MainApp {
 
         LocalDate dayOfPurchase = PURCHASE_IN_FIVE_DAYS_TIME;
 
+        boolean continueWithShopping = false;
+
         Scanner in = new Scanner(System.in);
 
-        System.out.print("Enter day of purchase (today or advance) ");
-        String purchaseWhen = in.nextLine();
-        if (StringUtils.isEmpty(purchaseWhen) || purchaseWhen.equalsIgnoreCase("today")) {
-            dayOfPurchase = PURCHASE_TODAY;
-        }
+        do {
+            System.out.print("Enter day of purchase (today or advance) ");
+            String purchaseWhen = in.next();
+            if (StringUtils.isEmpty(purchaseWhen) || purchaseWhen.equalsIgnoreCase("today")) {
+                dayOfPurchase = PURCHASE_TODAY;
+            }
 
-        System.out.print("Number of soup tins ");
-        int numOIfSoupTins = in.nextInt();
-        if (numOIfSoupTins > 0) {
-            soupTins = new StockItem("soup", StockItemType.TIN, BigDecimal.valueOf(0.65), numOIfSoupTins);
-            basket.add(soupTins);
-        }
+            System.out.print("Number of soup tins ");
+            int numOIfSoupTins = in.nextInt();
+            if (numOIfSoupTins > 0) {
+                soupTins = new StockItem("soup", StockItemType.TIN, BigDecimal.valueOf(0.65), numOIfSoupTins);
+                basket.add(soupTins);
+            }
 
-        System.out.print("Number of loaves of bread ");
-        int numOfLoavesOfBread = in.nextInt();
-        if (numOfLoavesOfBread > 0) {
-            loavesOfBread = new StockItem("bread", StockItemType.LOAF, BigDecimal.valueOf(0.80), numOfLoavesOfBread);
-            basket.add(loavesOfBread);
-        }
+            System.out.print("Number of loaves of bread ");
+            int numOfLoavesOfBread = in.nextInt();
+            if (numOfLoavesOfBread > 0) {
+                loavesOfBread = new StockItem("bread", StockItemType.LOAF, BigDecimal.valueOf(0.80), numOfLoavesOfBread);
+                basket.add(loavesOfBread);
+            }
 
-        System.out.print("Number of apples ");
-        int numOfApples = in.nextInt();
-        if (numOfApples > 0) {
-            apples = new StockItem("apple", StockItemType.SINGLE, BigDecimal.valueOf(0.10), numOfApples);
-            basket.add(apples);
-        }
+            System.out.print("Number of apples ");
+            int numOfApples = in.nextInt();
+            if (numOfApples > 0) {
+                apples = new StockItem("apple", StockItemType.SINGLE, BigDecimal.valueOf(0.10), numOfApples);
+                basket.add(apples);
+            }
 
-        System.out.print("Number of milk bottles ");
-        int numOfMilkBottles = in.nextInt();
-        if (numOfMilkBottles > 0) {
-            bottlesOfMilk = new StockItem("milk", StockItemType.BOTTLE, BigDecimal.valueOf(1.30), numOfMilkBottles);
-            basket.add(bottlesOfMilk);
-        }
+            System.out.print("Number of milk bottles ");
+            int numOfMilkBottles = in.nextInt();
+            if (numOfMilkBottles > 0) {
+                bottlesOfMilk = new StockItem("milk", StockItemType.BOTTLE, BigDecimal.valueOf(1.30), numOfMilkBottles);
+                basket.add(bottlesOfMilk);
+            }
 
-        if (basket.isEmpty()) {
-            basket = null;
-        }
+            henryGroceryBasket = new HenryGroceryBasket(basket, dayOfPurchase);
 
-        // TODO can never send null for the "dayOfPurchase"
+            BigDecimal grandTotal = henryGroceryBasket.priceUp();
+            System.out.println(String.format("\nThe grand total is £%s", grandTotal));
 
-        henryGroceryBasket = new HenryGroceryBasket(basket, dayOfPurchase);
-
-        BigDecimal grandTotal = henryGroceryBasket.priceUp();
-        System.out.println(String.format("\nThe grand total is £%s", grandTotal));
+            System.out.print("\nContinue (yes or no) ? ");
+            String continueShopping = in.next();
+            System.out.println(continueShopping + "\n\n");
+            if (continueShopping.equalsIgnoreCase("yes")) {
+                continueWithShopping = true;
+                basket.clear();
+            } else {
+                continueWithShopping = false;
+            }
+        } while (continueWithShopping);
     }
 }
