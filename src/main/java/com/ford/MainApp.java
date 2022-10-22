@@ -24,7 +24,7 @@ public class MainApp {
 
         LocalDate dayOfPurchase = PURCHASE_IN_FIVE_DAYS_TIME;
 
-        boolean continueWithShopping = false;
+        boolean continueShopping = false;
 
         Scanner in = new Scanner(System.in);
 
@@ -69,14 +69,14 @@ public class MainApp {
             System.out.println(String.format("\nThe grand total is £%s", grandTotal));
 
             System.out.print("\nContinue (yes or no) ? ");
-            String continueShopping = in.next();
+            String continueWithShopping = in.next();
             System.out.println(continueShopping + "\n\n");
-            if (continueShopping.equalsIgnoreCase("yes")) {
-                continueWithShopping = true;
+            if (continueWithShopping.equalsIgnoreCase("yes")) {
+                continueShopping = true;
                 basket.clear();
             } else {
-                continueWithShopping = false;
+                continueShopping = false;
             }
-        } while (continueWithShopping);
+        } while (continueShopping);
     }
 }
