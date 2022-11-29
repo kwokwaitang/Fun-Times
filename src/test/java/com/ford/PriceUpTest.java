@@ -13,7 +13,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -124,5 +129,33 @@ class PriceUpTest {
         BigDecimal expected = new BigDecimal("1.97");
 
         assertEquals(0, expected.compareTo(grandTotal));
+    }
+
+    @Test
+    void theCompareToOfStockItem() {
+        StockItem apples = new StockItem("apple", StockItemType.SINGLE, new BigDecimal("0.10"), 3);
+        StockItem soupTins = new StockItem("soup", StockItemType.TIN, new BigDecimal("0.65"), 2);
+        StockItem loafOfBread = new StockItem("bread", StockItemType.LOAF, new BigDecimal("0.80"), 1);
+        StockItem bottleOfMilk = new StockItem("milk", StockItemType.BOTTLE, new BigDecimal("1.30"), 1);
+        Set<StockItem> basket = new TreeSet<>(Arrays.asList(loafOfBread, bottleOfMilk, soupTins, apples));
+
+//        System.out.println(basket);
+
+        assertThat(basket.isEmpty(), is(Boolean.FALSE));
+
+        List<StockItem> stockItems = basket.stream().collect(Collectors.toList());
+        assertThat(stockItems.get(0).getProduct(), is("apple"));
+        assertThat(stockItems.get(1).getProduct(), is("soup"));
+        assertThat(stockItems.get(2).getProduct(), is("bread"));
+        assertThat(stockItems.get(3).getProduct(), is("milk"));
+
+        // Alternatively...
+        if (basket.toArray() instanceof StockItem[]) {
+            StockItem[] stockItemsAsArray = (StockItem[]) basket.toArray();
+            assertThat(stockItemsAsArray[0].getProduct(), is("apple"));
+            assertThat(stockItemsAsArray[1].getProduct(), is("soup"));
+            assertThat(stockItemsAsArray[2].getProduct(), is("bread"));
+            assertThat(stockItemsAsArray[3].getProduct(), is("milk"));
+        }
     }
 }

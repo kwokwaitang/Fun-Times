@@ -1,8 +1,10 @@
 package com.ford.stockitem;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.math.BigDecimal;
 
-public class StockItem {
+public class StockItem implements Comparable<StockItem>{
 
     private String product;
 
@@ -52,6 +54,11 @@ public class StockItem {
 
     public void setRequiredNumber(Integer requiredNumber) {
         this.requiredNumber = requiredNumber;
+    }
+
+    @Override
+    public int compareTo(@NotNull StockItem otherStockItem) {
+        return cost.compareTo(otherStockItem.cost);
     }
 
     @Override
