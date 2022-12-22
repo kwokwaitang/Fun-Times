@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ford.HenryGroceryBasket.PURCHASE_IN_FIVE_DAYS_TIME;
@@ -25,6 +26,19 @@ class PriceUpTest {
         });
 
         String expectedMessage = "Basket unavailable";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    @DisplayName("When the basket of goods is empty")
+    void constructorWithMissingBasket2() {
+        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new HenryGroceryBasket(Collections.emptyList(), PURCHASE_TODAY);
+        });
+
+        String expectedMessage = "Received empty basket";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));

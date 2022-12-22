@@ -16,25 +16,23 @@ public class CurrentDiscount extends CashTill {
     BigDecimal getDiscount() {
         BigDecimal discount = new BigDecimal("0.00");
 
-        if (!stockItems.isEmpty()) {
-            if (discountAvailableFromYesterdayForSevenDays()) {
-                if (anyTinsAndLoavesPresentInBasket()) {
-                    if (moreThan2TinsRequired()) {
-                        BigDecimal subTotal =
-                                new BigDecimal("0.40").multiply(new BigDecimal(Integer.toString(getNumberOfSoupTinsThatCanBeDiscounted())));
-                        discount = discount.add(subTotal);
-                    }
+        if (discountAvailableFromYesterdayForSevenDays()) {
+            if (anyTinsAndLoavesPresentInBasket()) {
+                if (moreThan2TinsRequired()) {
+                    BigDecimal subTotal =
+                            new BigDecimal("0.40").multiply(new BigDecimal(Integer.toString(getNumberOfSoupTinsThatCanBeDiscounted())));
+                    discount = discount.add(subTotal);
                 }
             }
+        }
 
-            if (discountAvailableFromThreeDaysHenceToEndOfMonth()) {
-                if (anyApplesPresentInBasket()) {
-                    // Total-up number of apples and apply a 10% discount
-                    BigDecimal subTotal =
-                            new BigDecimal(Integer.toString(getNumberOfApplesThatCanBeDiscounted())).multiply(new BigDecimal(
-                                    "0.10")); // TODO fetch price of apples
-                    discount = discount.add(subTotal.multiply(BigDecimal.valueOf(APPLES_DISCOUNT)));
-                }
+        if (discountAvailableFromThreeDaysHenceToEndOfMonth()) {
+            if (anyApplesPresentInBasket()) {
+                // Total-up number of apples and apply a 10% discount
+                BigDecimal subTotal =
+                        new BigDecimal(Integer.toString(getNumberOfApplesThatCanBeDiscounted()))
+                                .multiply(new BigDecimal("0.10")); // TODO fetch price of apples
+                discount = discount.add(subTotal.multiply(BigDecimal.valueOf(APPLES_DISCOUNT)));
             }
         }
 

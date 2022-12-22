@@ -22,6 +22,10 @@ public class HenryGroceryBasket implements Basket {
     public HenryGroceryBasket(List<StockItem> basket, LocalDate dateOfPurchase) {
         this.basket = Objects.requireNonNull(basket, () -> "Basket unavailable");
         this.dateOfPurchase = Objects.requireNonNull(dateOfPurchase, () -> "Missing a date of purchase");
+
+        if (basket.isEmpty()) {
+            throw new IllegalArgumentException("Received empty basket");
+        }
     }
 
     public List<StockItem> getBasket() {
