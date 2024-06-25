@@ -15,7 +15,7 @@ abstract class CashTill {
 
     protected LocalDate dateOfPurchase;
 
-    public CashTill(List<StockItem> stockItems, LocalDate dateOfPurchase) {
+    protected CashTill(List<StockItem> stockItems, LocalDate dateOfPurchase) {
         this.stockItems = stockItems;
         this.dateOfPurchase = dateOfPurchase;
     }
@@ -140,6 +140,9 @@ abstract class CashTill {
         LocalDate startDateOfCurrentMonth = dateOfPurchase.withDayOfMonth(1);
         LocalDate endDateOfCurrentMonth = dateOfPurchase.withDayOfMonth(startDateOfCurrentMonth.lengthOfMonth());
 
-        return (dateOfPurchase.isAfter(inThreeDaysTime) && dateOfPurchase.isBefore(endDateOfCurrentMonth));
+        boolean isThreeDaysAfter = dateOfPurchase.isAfter(inThreeDaysTime);
+        boolean isBeforeOrOnTheEndOfTheMonth = dateOfPurchase.isBefore(endDateOfCurrentMonth) || dateOfPurchase.isEqual(endDateOfCurrentMonth);
+
+        return isThreeDaysAfter && isBeforeOrOnTheEndOfTheMonth;
     }
 }
