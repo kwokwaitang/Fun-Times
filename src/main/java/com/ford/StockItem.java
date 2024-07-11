@@ -8,9 +8,9 @@ public class StockItem {
 
     private StockItemType unit;
 
-    private BigDecimal cost;
+    protected BigDecimal cost;
 
-    private Integer requiredNumber;
+    protected Integer requiredNumber;
 
     public StockItem() {
     }
