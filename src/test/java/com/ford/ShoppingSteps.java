@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
@@ -96,7 +97,7 @@ public class ShoppingSteps implements En {
                     discounts.add(new Discount(theOffer, validFrom, validTo));
                 });
 
-                System.out.println(discounts);
+                System.out.println();
             }
         });
 
@@ -116,20 +117,6 @@ public class ShoppingSteps implements En {
             System.out.println(">>> item is " + items);
             var itemsForShoppingBasket = Arrays.stream(items.split(",")).map(String::trim).toList();
             System.out.println(">>> itemsForShoppingBasket = " + itemsForShoppingBasket);
-
-//            Optional<Integer> optionalNumOfStockedItems = itemsForShoppingBasket.stream()
-//                    .filter(x -> x.matches(NUMBER_OF_STOCK_ITEMS))
-//                    .map(x -> {
-//                        var pattern = Pattern.compile(NUMBER_OF_STOCK_ITEMS);
-//                        var matcher = pattern.matcher(x);
-//                        if (matcher.find()) {
-//                            return Integer.parseInt(matcher.group(1));
-//                        }
-//                        return 0;
-//                    })
-//                    .findFirst();
-//            optionalNumOfStockedItems.ifPresent(numOfItems -> System.out.println("\t Number of items is " +
-//            numOfItems));
 
             itemsForShoppingBasket.forEach(requestedItem -> {
                 if (requestedItem.matches(NUMBER_OF_STOCK_ITEMS)) {
@@ -184,15 +171,48 @@ public class ShoppingSteps implements En {
             discounts.forEach(currentDiscount -> {
                 final var offer = currentDiscount.offer();
 
-                if (isProductWithSomeDiscount(offer)) {
+                if (isBuySomeProductsAndGetSomethingHalfPrice(offer)) {
                     System.out.println(">>> FOUND DISCOUNT #1");
+                    var optionalDiscountDetails = getProductsAndSomethingForHalfPriceValues(offer);
+
+                    if (optionalDiscountDetails.isPresent()) {
+                        Triple<Integer, String, String> discountDetails = optionalDiscountDetails.get();
+
+                        int validToSpecificDays = getValidToSpecificDays(currentDiscount.validTo());
+                        if (discountAvailableFromYesterdayForSpecifiedDays(validToSpecificDays)) {
+                            StockItem stockItem = switch(discountDetails.getMiddle()) {
+                                case "tin of soup", "tins of soup" -> shoppingBasket.get("soup");
+                                case "loaf of bread", "loaves of bread" -> shoppingBasket.get("bread");
+                                case "bottle of milk", "bottles of milk" -> shoppingBasket.get("milk");
+                                case "apple", "apples" -> shoppingBasket.get("apples");
+                                default -> null;
+                            };
+
+                            if (stockItem != null && stockItem.requiredNumber > 0) {
+                                var halfPriceItem = switch(discountDetails.getRight()) {
+                                    case "a tin of soup" -> shoppingBasket.get("soup").cost.divide(BigDecimal.valueOf(2L), RoundingMode.HALF_UP);
+                                    case "a loaf of bread" -> shoppingBasket.get("bread").cost.divide(BigDecimal.valueOf(2L), RoundingMode.HALF_UP);
+                                    case "a bottle of milk" -> shoppingBasket.get("milk").cost.divide(BigDecimal.valueOf(2L), RoundingMode.HALF_UP);
+                                    case "an apple" -> shoppingBasket.get("apples").cost.divide(BigDecimal.valueOf(2L), RoundingMode.HALF_UP);
+                                    default -> new BigDecimal("0.00");
+                                };
+
+                                System.out.println("\t\tDISCOUNT IS " + halfPriceItem);
+
+                                totalDiscount = totalDiscount.add(halfPriceItem).setScale(2, RoundingMode.HALF_EVEN);
+                            }
+                        }
+                    }
+                }
+
+                if (isProductWithSomeDiscount(offer)) {
+                    System.out.println(">>> FOUND DISCOUNT #2");
                     var optionalDiscountDetails = getProductAndPercentageValues(offer);
-                    //optionalDiscountDetails.ifPresent(discountDetails -> System.out.println("\t" + discountDetails.getLeft() + ": " + discountDetails.getRight()));
 
                     if (optionalDiscountDetails.isPresent()) {
                         Pair<String, Integer> discountDetails = optionalDiscountDetails.get();
 
-                        if (discountAvailableFromSpecifiedDaysHenceToEndOfMonth(3)) {
+                        if (discountAvailableFromSpecifiedDaysHenceToEndOfMonth(getValidFromSpecificDays(currentDiscount.validFrom()))) {
                             // Does the basket have some products, if so, apply a discount
                             StockItem stockItem = shoppingBasket.get(discountDetails.getLeft());
 
@@ -213,45 +233,6 @@ public class ShoppingSteps implements En {
                     }
                 }
 
-                if (isBuySomeProductsAndGetSomethingHalfPrice(offer)) {
-                    System.out.println(">>> FOUND DISCOUNT #2");
-                    var optionalDiscountDetails = getProductsAndSomethingForHalfPriceValues(offer);
-                    //optionalDiscountDetails.ifPresent(discountDetails -> System.out.println("\t" + discountDetails.getLeft() + ": " + discountDetails.getRight()));
-
-                    if (optionalDiscountDetails.isPresent()) {
-                        Triple<Integer, String, String> discountDetails = optionalDiscountDetails.get();
-
-                        if (discountAvailableFromYesterdayForSpecifiedDays(7)) {
-                            StockItem stockItem = switch(discountDetails.getMiddle()) {
-                                case "tin of soup", "tins of soup" -> shoppingBasket.get("soup");
-                                case "loaf of bread", "loaves of bread" -> shoppingBasket.get("bread");
-                                case "bottle of milk", "bottles of milk" -> shoppingBasket.get("milk");
-                                case "apple", "apples" -> shoppingBasket.get("apples");
-                                default -> null;
-                            };
-
-                            if (stockItem != null && stockItem.requiredNumber > 0) {
-                                var halfPriceItem = switch(discountDetails.getRight()) {
-                                    case "a tin of soup" -> shoppingBasket.get("soup").cost.divide(BigDecimal.valueOf(2L), RoundingMode.HALF_UP);
-                                    case "a loaf of bread" -> shoppingBasket.get("bread").cost.divide(BigDecimal.valueOf(2L), RoundingMode.HALF_UP);
-                                    case "a bottle of milk" -> shoppingBasket.get("milk").cost.divide(BigDecimal.valueOf(2L), RoundingMode.HALF_UP);
-                                    case "an apple" -> shoppingBasket.get("apples").cost.divide(BigDecimal.valueOf(2L), RoundingMode.HALF_UP);
-                                    default -> new BigDecimal("0.00");
-                                };
-
-//                                BigDecimal subTotal =
-//                                        halfPriceItem.multiply(new BigDecimal(Integer.toString(stockItem.requiredNumber)));
-//
-//                                var discount = new BigDecimal("0.00").add(subTotal);
-
-                                System.out.println("\t\tDISCOUNT IS " + halfPriceItem);
-
-                                totalDiscount = totalDiscount.add(halfPriceItem).setScale(2, RoundingMode.HALF_EVEN);
-                            }
-                        }
-                    }
-                }
-
                 System.out.println();
             });
         });
@@ -263,26 +244,25 @@ public class ShoppingSteps implements En {
         });
     }
 
-//    private void processDiscountOffers() {
-//        System.out.println("HELLO!!!");
-//        discounts.forEach(currentDiscount -> {
-//            final String offer = currentDiscount.offer();
-//
-//            if (isProductWithSomePercentageDiscount(offer)) {
-//                System.out.println(">>> FOUND DISCOUNT #1");
-//                var optionalDiscountDetails = getProductAndPercentageValues(offer);
-//                optionalDiscountDetails.ifPresent(discountDetails -> System.out.println("\t" + discountDetails
-//                .getLeft() + ": " + discountDetails.getRight()));
-//            }
-//
-//            if (isBuySomeProductsAndGetSomethingHalfPrice(offer)) {
-//                System.out.println(">>> FOUND DISCOUNT #2");
-//                var optionalDiscountDetails = getProductsAndSomethingForHalfPriceValues(offer);
-//                optionalDiscountDetails.ifPresent(discountDetails -> System.out.println("\t" + discountDetails
-//                .getLeft() + ": " + discountDetails.getRight()));
-//            }
-//        });
-//    }
+    private static int getValidToSpecificDays(String validTo) {
+        int validToSpecificDays = 0;
+
+        if (StringUtils.isNoneBlank(validTo) && validTo.matches("^for \\d+ day[s]$")) {
+            validToSpecificDays = Integer.parseInt(validTo.split(" ")[1]);
+        }
+
+        return validToSpecificDays;
+    }
+
+    private static int getValidFromSpecificDays(String validFrom) {
+        int validFromSpecificDays = 0;
+
+        if (StringUtils.isNoneBlank(validFrom) && validFrom.matches("^from \\d+ day[s] hence$")) {
+            validFromSpecificDays = Integer.parseInt(validFrom.split(" ")[1]);
+        }
+
+        return validFromSpecificDays;
+    }
 
     private BigDecimal getDiscount() {
         var discount = new BigDecimal("0.00");
