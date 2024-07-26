@@ -38,28 +38,28 @@ public class MainApp {
             System.out.print("Number of soup tins ");
             int numOIfSoupTins = in.nextInt();
             if (numOIfSoupTins > 0) {
-                soupTins = new StockItem("soup", StockItemType.TIN, BigDecimal.valueOf(0.65), numOIfSoupTins);
+                soupTins = StockItem.create("soup", StockItemType.TIN, BigDecimal.valueOf(0.65), numOIfSoupTins);
                 basket.add(soupTins);
             }
 
             System.out.print("Number of loaves of bread ");
             int numOfLoavesOfBread = in.nextInt();
             if (numOfLoavesOfBread > 0) {
-                loavesOfBread = new StockItem("bread", StockItemType.LOAF, BigDecimal.valueOf(0.80), numOfLoavesOfBread);
+                loavesOfBread = StockItem.create("bread", StockItemType.LOAF, BigDecimal.valueOf(0.80), numOfLoavesOfBread);
                 basket.add(loavesOfBread);
             }
 
             System.out.print("Number of apples ");
             int numOfApples = in.nextInt();
             if (numOfApples > 0) {
-                apples = new StockItem("apple", StockItemType.SINGLE, BigDecimal.valueOf(0.10), numOfApples);
+                apples = StockItem.create("apple", StockItemType.SINGLE, BigDecimal.valueOf(0.10), numOfApples);
                 basket.add(apples);
             }
 
             System.out.print("Number of milk bottles ");
             int numOfMilkBottles = in.nextInt();
             if (numOfMilkBottles > 0) {
-                bottlesOfMilk = new StockItem("milk", StockItemType.BOTTLE, BigDecimal.valueOf(1.30), numOfMilkBottles);
+                bottlesOfMilk = StockItem.create("milk", StockItemType.BOTTLE, BigDecimal.valueOf(1.30), numOfMilkBottles);
                 basket.add(bottlesOfMilk);
             }
 

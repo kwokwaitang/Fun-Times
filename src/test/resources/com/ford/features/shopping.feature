@@ -12,19 +12,19 @@ Feature: Shopping at Henry’s Grocery store
       | buy 2 tins of soup and get a loaf of bread half price | yesterday         | for 7 days                           |
       | apples have a 10% discount                            | from 3 days hence | until the end of the following month |
 
-  Scenario Outline: To price up a shopping basket and applying any discounts
+  Scenario Outline: To price up a shopping basket with a number of stock items and applying any discounts
     Given an empty shopping basket
-    When adding <Items> to the shopping basket
-    And is to be bought <Date-of-purchase>
+    When adding <stock-items> to the shopping basket
+    And is to be bought <date-of-purchase>
     And apply any discounts
-    Then the cost of the shopping is expected to be <Expected-total-cost>
+    Then the cost of the shopping is expected to be <total-cost>
 
     Examples: Shopping bought today
-      | Items                               | Date-of-purchase | Expected-total-cost |
-      | "3 tins of soup, 2 loaves of bread" | "today"          | 3.15                |
-      | "6 apples, 1 bottle of milk"        | "today"          | 1.90                |
+      | stock-items                         | date-of-purchase | total-cost |
+      | "3 tins of soup, 2 loaves of bread" | "today"          | 3.15       |
+      | "6 apples,1 bottle of milk"         | "today"          | 1.90       |
 
     Examples: Shopping bought days ahead
-      | Items                                       | Date-of-purchase | Expected-total-cost |
-      | "6 apples, 1 bottle of milk"                | "in 5 days time" | 1.84                |
-      | "3 apples, 2 tins of soup, 1 loaf of bread" | "in 5 days time" | 1.97                |
+      | stock-items                                 | date-of-purchase | total-cost |
+      | "6 apples, 1 bottle of milk"                | "in 5 days time" | 1.84       |
+      | "3 apples, 2 tins of soup, 1 loaf of bread" | "in 5 days time" | 1.97       |

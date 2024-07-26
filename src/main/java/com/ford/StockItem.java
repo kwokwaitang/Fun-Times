@@ -12,10 +12,14 @@ public class StockItem {
 
     protected Integer requiredNumber;
 
-    public StockItem() {
+    public static StockItem create(String product, StockItemType unit, BigDecimal cost, Integer requiredNumber) {
+        return new StockItem(product, unit, cost, requiredNumber);
     }
 
-    public StockItem(String product, StockItemType unit, BigDecimal cost, Integer requiredNumber) {
+    private StockItem() {
+    }
+
+    private StockItem(String product, StockItemType unit, BigDecimal cost, Integer requiredNumber) {
         this.product = product;
         this.unit = unit;
         this.cost = cost;

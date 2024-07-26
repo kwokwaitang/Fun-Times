@@ -16,6 +16,12 @@ public class CurrentDiscount extends CashTill {
     BigDecimal getDiscount() {
         BigDecimal discount = new BigDecimal("0.00");
 
+        /*
+         * Apply the following discounts...
+         * > Buy ??? and get a ??? half price
+         * > ??? have a ???% discount
+         */
+
         if (discountAvailableFromYesterdayForSevenDays()) {
             if (anyTinsAndLoavesPresentInBasket()) {
                 if (moreThan2TinsRequired()) {
