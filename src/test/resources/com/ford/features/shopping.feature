@@ -19,12 +19,12 @@ Feature: Shopping at Henry’s Grocery store
     And apply any discounts
     Then the cost of the shopping is expected to be <total-cost>
 
-    Examples: Shopping bought today
+    Examples: Shopping to be bought today
       | stock-items                         | date-of-purchase | total-cost |
       | "3 tins of soup, 2 loaves of bread" | "today"          | 3.15       |
       | "6 apples,1 bottle of milk"         | "today"          | 1.90       |
 
-    Examples: Shopping bought days ahead
+    Examples: Shopping to be bought in advance by a specified number of days
       | stock-items                                 | date-of-purchase | total-cost |
       | "6 apples, 1 bottle of milk"                | "in 5 days time" | 1.84       |
       | "3 apples, 2 tins of soup, 1 loaf of bread" | "in 5 days time" | 1.97       |
