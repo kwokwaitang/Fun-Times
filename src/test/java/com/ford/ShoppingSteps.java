@@ -1,6 +1,7 @@
 package com.ford;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.Then;
 import io.cucumber.java8.En;
 
 import java.math.BigDecimal;
@@ -36,8 +37,17 @@ public class ShoppingSteps implements En {
 
         When("apply any discounts", shopping::applyDiscount);
 
-        Then("the cost of the shopping is expected to be {bigdecimal}", (BigDecimal totalCost) -> {
-            assertThat(shopping.getTotalWithNoDiscounts().subtract(shopping.getTotalDiscount()), is(totalCost));
-        });
+//        Then("the cost of the shopping is expected to be {bigdecimal}", (BigDecimal totalCost) -> {
+//            assertThat(shopping.getTotalWithNoDiscounts().subtract(shopping.getTotalDiscount()), is(totalCost));
+//        });
+    }
+
+    /**
+     * Alternative style...
+     * @param totalCost
+     */
+    @Then("the cost of the shopping is expected to be {bigdecimal}")
+    public void theCostOfTheShoppingIsExpectedToBe(BigDecimal totalCost) {
+        assertThat(shopping.getTotalWithNoDiscounts().subtract(shopping.getTotalDiscount()), is(totalCost));
     }
 }
