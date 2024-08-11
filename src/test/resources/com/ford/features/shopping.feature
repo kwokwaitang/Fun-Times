@@ -1,5 +1,6 @@
 Feature: Shopping at Henry’s Grocery store
 
+  # A background specifies a set of steps common to every scenario
   Background:
     Given the following available stock items
       | product | unit   | cost |
@@ -12,6 +13,7 @@ Feature: Shopping at Henry’s Grocery store
       | buy 2 tins of soup and get a loaf of bread half price | yesterday         | for 7 days                           |
       | apples have a 10% discount                            | from 3 days hence | until the end of the following month |
 
+  # A scenario outline is a parameterised scenario
   Scenario Outline: To price up a shopping basket with a number of stock items and applying any discounts
     Given an empty shopping basket
     When adding <stock-items> to the shopping basket
