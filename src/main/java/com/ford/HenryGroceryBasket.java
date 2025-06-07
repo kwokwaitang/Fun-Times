@@ -13,7 +13,7 @@ public class HenryGroceryBasket implements Basket {
 
     private List<StockItem> basket;
 
-    private LocalDate dateOfPurchase;
+    private final LocalDate dateOfPurchase;
 
     public HenryGroceryBasket(List<StockItem> basket) {
         this(basket, LocalDate.now());
